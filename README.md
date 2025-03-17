@@ -38,7 +38,7 @@ php artisan l5-swagger:generate
 ```
 {base_url}/api/documentation
 
-![swagger](https://github.com/saeedncc/transport/blob/master/public/image.jpg?raw=true)
+![swagger](https://github.com/saeedncc/transport/blob/master/public/doc.png?raw=true)
 
 
 

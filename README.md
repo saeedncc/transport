@@ -8,7 +8,7 @@ Require this package with docker using the following command:
 
 in docker folder you use this command
 ```bash
-docker compose ud -d
+docker compose up -d
 ```
 
 

@@ -20,17 +20,22 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::name('api.')->namespace('App\Http\Controllers')->group(function () {
-	
-	Route::group(['prefix' => 'monitors','controller'=>'MonitorController'], function () {
-		
-		Route::name('monitor.')->group(function () {
-			
+
+	Route::group(['prefix' => 'vehicles','controller'=>'VehicleController'], function () {
+		Route::name('vehicles.')->group(function () {
 			Route::get('/','index')->name('index');
-			Route::get('/{monitor_id}','history')->name('history');
-			Route::post('/store','store')->name('store');
+			Route::post('/','store')->name('store');
+			Route::get('/withDriver','withDriver')->name('withDriver');
+			Route::post('/{vehicle}','assignDriver')->name('assignDriver');
 		});
-		 
 	});
+
+    Route::group(['prefix' => 'drivers','controller'=>'DriverController'], function () {
+        Route::name('drivers.')->group(function () {
+            Route::get('/','index')->name('index');
+            Route::post('/','store')->name('store');
+        });
+    });
 
 });
 

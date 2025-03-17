@@ -1,0 +1,80 @@
+
+version: '3'
+
+services:
+
+  # App Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: php8.2fpm-node
+    container_name: my-app
+    restart: unless-stopped
+    tty: true
+    working_dir: /var/www/app
+    volumes:
+      - ../:/var/www/app
+      - ./config/php/php.ini:/usr/local/etc/php/conf.d/php.ini
+      - ./config/php/php.ini:/usr/local/etc/php/php.ini
+    networks:
+      - my-network
+
+
+  # Nginx Service
+  webserver:
+    image: nginx:alpine
+    container_name: my-webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "7000:70"
+    volumes:
+      - ../:/var/www/app
+      - ./config/nginx:/etc/nginx/conf.d
+        
+    networks:
+      - my-network      
+      
+ 
+
+  # MySQL Service
+  database:
+    image: mysql:8.0
+    container_name: my-database
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: root
+      MYSQL_ROOT_PASSWORD: secret
+      
+    volumes:
+      - ../../db/mysql:/var/lib/mysql
+      - ./config/mysql/my.cnf:/etc/my.cnf
+    
+    networks:
+      - my-network
+      
+  #phpmyadmin    
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: my-phpmyadmin
+    ports:
+        - '7070:80'
+    restart: always
+    environment:
+        PMA_HOST: database
+    depends_on:
+        - database
+    
+    networks:
+      - my-network
+
+  
+# Networks Configuration
+networks:
+  my-network:
+    driver: bridge
+ 
